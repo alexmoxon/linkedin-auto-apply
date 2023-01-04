@@ -2,7 +2,7 @@ import yaml, pdb
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from linkedineasyapply import LinkedinEasyApply
+from easyapply import LinkedinEasyApply
 from validate_email import validate_email
 
 def init_browser():
@@ -78,7 +78,7 @@ def validate_yaml():
     assert len(parameters['checkboxes']) > 0
 
     checkboxes = parameters.get('checkboxes', [])
-    assert isinstance(checkboxes['driversLicence'], bool)
+    assert isinstance(checkboxes['driversLicense'], bool)
     assert isinstance(checkboxes['requireVisa'], bool)
     assert isinstance(checkboxes['legallyAuthorized'], bool)
     assert isinstance(checkboxes['urgentFill'], bool)
