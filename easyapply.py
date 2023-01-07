@@ -121,11 +121,11 @@ class LinkedinEasyApply:
             raise Exception("No more jobs on this page")
 
         try:
-            job_results = self.browser.find_element_by_class_name("jobs-search-results")
+            job_results = self.browser.find_element_by_class_name("jobs-search-results-list")
             self.scroll_slow(job_results)
             self.scroll_slow(job_results, step=300, reverse=True)
 
-            job_list = self.browser.find_elements_by_class_name('jobs-search-results__list')[0].find_elements_by_class_name('jobs-search-results__list-item')
+            job_list = self.browser.find_elements_by_class_name('jobs-search-results-list')[0].find_elements_by_class_name('jobs-search-results__list-item')
         except:
             raise Exception("No more jobs on this page")
 
@@ -489,7 +489,7 @@ class LinkedinEasyApply:
                     elif 'sponsor' in question_text:
                         answer = self.get_answer('requireVisa')
 
-                        choice = ""
+                        choice = "no"
 
                         for option in options:
                             if answer == 'yes':
@@ -505,7 +505,7 @@ class LinkedinEasyApply:
                     elif 'authorized' in question_text or 'authorised' in question_text:
                         answer = self.get_answer('legallyAuthorized')
 
-                        choice = ""
+                        choice = "yes"
 
                         for option in options:
                             if answer == 'yes':
@@ -522,7 +522,7 @@ class LinkedinEasyApply:
                     elif 'citizenship' in question_text:
                         answer = self.get_answer('legallyAuthorized')
 
-                        choice = ""
+                        choice = "yes"
 
                         for option in options:
                             if answer == 'yes':
@@ -535,7 +535,7 @@ class LinkedinEasyApply:
                         self.select_dropdown(dropdown_field, choice)
                     elif 'gender' in question_text or 'veteran' in question_text or 'race' in question_text or 'disability' in question_text or 'latino' in question_text:
 
-                        choice = ""
+                        choice = "male"
 
                         for option in options:
                             if 'prefer' in option.lower() or 'decline' in option.lower() or 'don\'t' in option.lower() or 'specified' in option.lower() or 'none' in option.lower():
@@ -579,8 +579,13 @@ class LinkedinEasyApply:
 
     def send_resume(self):
         try:
-            file_upload_elements = (By.CSS_SELECTOR, "input[name='file']")
-            if len(self.browser.find_elements(file_upload_elements[0], file_upload_elements[1])) > 0:
+            # find_element_by_class_name('artdeco-datepicker__text')
+            # file_upload_elements = (By.CSS_SELECTOR, "input[name='file']")
+            upload_elements = self.browser.find_element_by_class_name('jobs-resume-picker__resume-btn-container')
+            file_upload_elements = upload_elements.find_element_by_tag_name('button')
+            file_upload_elements.click()
+            pass
+            """if len(self.browser.find_elements(file_upload_elements[0], file_upload_elements[1])) > 0:
                 input_buttons = self.browser.find_elements(file_upload_elements[0], file_upload_elements[1])
                 for upload_button in input_buttons:
                     upload_type = upload_button.find_element(By.XPATH, "..").find_element(By.XPATH, "preceding-sibling::*")
@@ -590,7 +595,7 @@ class LinkedinEasyApply:
                         if self.cover_letter_dir != '':
                             upload_button.send_keys(self.cover_letter_dir)
                         elif 'required' in upload_type.text.lower():
-                            upload_button.send_keys(self.resume_dir)
+                            upload_button.send_keys(self.resume_dir)"""
         except:
             print("Failed to upload resume or cover letter!")
             pass
